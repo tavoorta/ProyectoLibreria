@@ -68,6 +68,7 @@ public class Libro extends javax.swing.JFrame {
         txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Libreria Tres Gatos");
 
         jLabel8.setText("LIBROS");
 
@@ -144,7 +145,7 @@ public class Libro extends javax.swing.JFrame {
             }
         });
 
-        btnInicio.setText("Inicio");
+        btnInicio.setText("INICIO");
         btnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInicioActionPerformed(evt);

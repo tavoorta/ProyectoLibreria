@@ -27,13 +27,22 @@ public class Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         btnLibro = new javax.swing.JButton();
+        btnCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Libreria Tres Gatos");
 
         btnLibro.setText("LIBRO");
         btnLibro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLibroActionPerformed(evt);
+            }
+        });
+
+        btnCliente.setText("CLIENTE");
+        btnCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClienteActionPerformed(evt);
             }
         });
 
@@ -43,15 +52,19 @@ public class Inicio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(148, 148, 148)
-                .addComponent(btnLibro)
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCliente)
+                    .addComponent(btnLibro))
+                .addContainerGap(439, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(84, 84, 84)
                 .addComponent(btnLibro)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(btnCliente)
+                .addContainerGap(260, Short.MAX_VALUE))
         );
 
         pack();
@@ -62,6 +75,12 @@ public class Inicio extends javax.swing.JFrame {
         libro.setVisible(true);       
         this.dispose();
     }//GEN-LAST:event_btnLibroActionPerformed
+
+    private void btnClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteActionPerformed
+        Cliente cliente = new Cliente();
+        cliente.setVisible(true);       
+        this.dispose();
+    }//GEN-LAST:event_btnClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -99,6 +118,7 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnLibro;
     // End of variables declaration//GEN-END:variables
 }
