@@ -4,6 +4,20 @@
  */
 package app;
 
+import static app.Conexion.getConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
 /**
  *
  * @author ggaro
@@ -15,6 +29,12 @@ public class Libro extends javax.swing.JFrame {
      */
     public Libro() {
         initComponents();
+        txtId.setVisible(false);
+        cargarTabla();
+        limiteInput(txtCodigoLibro, 10);
+        limiteInput(txtNombreLibro, 50);
+        limiteInput(txtPrecioLibro, 10);
+        limiteInput(txtCantidadLibro, 4);
     }
 
     /**
@@ -41,10 +61,11 @@ public class Libro extends javax.swing.JFrame {
         btnEliminarLibro = new javax.swing.JButton();
         btnClearTableLibro = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        TableListBook = new javax.swing.JTable();
+        tblLibros = new javax.swing.JTable();
         btnEditarLibro = new javax.swing.JButton();
         btnTodosLibros = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,7 +86,7 @@ public class Libro extends javax.swing.JFrame {
             }
         });
 
-        btnBuscarLibro.setText("Buscar por Código");
+        btnBuscarLibro.setText("Buscar libro");
         btnBuscarLibro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarLibroActionPerformed(evt);
@@ -86,15 +107,28 @@ public class Libro extends javax.swing.JFrame {
             }
         });
 
-        TableListBook.setModel(new javax.swing.table.DefaultTableModel(
+        tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Código", "Precio", "Cantidad"
+                "Id", "Código", "Nombre", "Precio", "Cantidad"
             }
-        ));
-        jScrollPane4.setViewportView(TableListBook);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblLibros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLibrosMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblLibros);
 
         btnEditarLibro.setText("Editar");
         btnEditarLibro.addActionListener(new java.awt.event.ActionListener() {
@@ -150,9 +184,14 @@ public class Libro extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInicio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnGuardarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -173,17 +212,18 @@ public class Libro extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscarLibro))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(28, Short.MAX_VALUE)
-                        .addComponent(btnInicio)
-                        .addGap(18, 18, 18)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnInicio)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10)
@@ -209,41 +249,316 @@ public class Libro extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel8)
-                    .addContainerGap(394, Short.MAX_VALUE)))
+                    .addContainerGap(400, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarLibroActionPerformed
-        
+
+        String codigoLibro = txtCodigoLibro.getText();
+        String nombre = txtNombreLibro.getText();
+        String cantidad = txtCantidadLibro.getText();
+        String precio = txtPrecioLibro.getText().replace(",", ".");
+        if (!codigoLibro.isEmpty() && !nombre.isEmpty() && !cantidad.isEmpty() && !precio.isEmpty()) {
+
+            int cantidadLibro = Integer.parseInt(cantidad);
+            double precioLibro;
+            try {
+                precioLibro = Double.parseDouble(precio);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un precio válido.");
+                return;
+            }
+            PreparedStatement ps;
+            Connection conect = getConnection();
+            try {
+                String checkSql = "SELECT COUNT(*) FROM libro WHERE codigo = ?";
+                PreparedStatement checkPs = conect.prepareStatement(checkSql);
+                checkPs.setString(1, codigoLibro);
+                ResultSet rs = checkPs.executeQuery();
+                rs.next();
+
+                if (rs.getInt(1) > 0) {
+                    JOptionPane.showMessageDialog(null, "El código de libro ya existe. Por favor, ingrese un código diferente.");
+                    return;
+                }
+
+                String sql
+                        = "INSERT INTO "
+                        + "libro "
+                        + "(codigo, precio, cantidad, nombre) "
+                        + "VALUES "
+                        + "(?,?,?,?)";
+                ps = conect.prepareStatement(sql);
+                ps.setString(1, codigoLibro);
+                ps.setDouble(2, precioLibro);
+                ps.setInt(3, cantidadLibro);
+                ps.setString(4, nombre);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Registro Guardado");
+                limpiar();
+                cargarTabla();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+        }
     }//GEN-LAST:event_btnGuardarLibroActionPerformed
 
     private void btnBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarLibroActionPerformed
-        
+        String libro = txtBuscarLibro.getText();
+        buscarLibro(libro);
     }//GEN-LAST:event_btnBuscarLibroActionPerformed
 
     private void btnEliminarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarLibroActionPerformed
-        
+
+        String delete = txtId.getText();
+        if (delete.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, introduzca el libro que desea eliminar.");
+            return;
+        }
+        int id = Integer.parseInt(txtId.getText());
+
+        String sql
+                = "UPDATE "
+                + "libro "
+                + "SET "
+                + "cantidad = 0 "
+                + "WHERE "
+                + "idLibro=?";
+        PreparedStatement ps;
+        try {
+            Connection conect = getConnection();
+            ps = conect.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
+            limpiar();
+            cargarTabla();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
     private void btnClearTableLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableLibroActionPerformed
-        
+        DefaultTableModel model = (DefaultTableModel) tblLibros.getModel();
+        model.setRowCount(0);
     }//GEN-LAST:event_btnClearTableLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
-        
+
+        String delete = txtId.getText();
+        if (delete.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, introduzca el libro que desea editar.");
+            return;
+        }
+        int id = Integer.parseInt(txtId.getText());
+        String codigoLibro = txtCodigoLibro.getText();
+        String nombre = txtNombreLibro.getText();
+        String cantidad = txtCantidadLibro.getText();
+        String precio = txtPrecioLibro.getText().replace(",", ".");
+        if (!codigoLibro.isEmpty() && !nombre.isEmpty() && !cantidad.isEmpty() && !precio.isEmpty()) {
+
+            int cantidadLibro = Integer.parseInt(cantidad);
+            double precioLibro;
+            try {
+                precioLibro = Double.parseDouble(precio);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un precio válido.");
+                return;
+            }
+            try {
+                PreparedStatement ps;
+                Connection conect = getConnection();
+                String sql
+                        = "UPDATE "
+                        + "libro "
+                        + "SET "
+                        + "codigo=?, precio=?, cantidad=?, nombre=? "
+                        + "WHERE "
+                        + "idLibro = ?";
+                ps = conect.prepareStatement(sql);
+                ps.setString(1, codigoLibro);
+                ps.setDouble(2, precioLibro);
+                ps.setInt(3, cantidadLibro);
+                ps.setString(4, nombre);
+                ps.setInt(5, id);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Registro Editado");
+                limpiar();
+                cargarTabla();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+        }
     }//GEN-LAST:event_btnEditarLibroActionPerformed
 
     private void btnTodosLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodosLibrosActionPerformed
-        
+        cargarTabla();
     }//GEN-LAST:event_btnTodosLibrosActionPerformed
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         Inicio inicio = new Inicio();
-        inicio.setVisible(true);       
+        inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void tblLibrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLibrosMouseClicked
+
+        PreparedStatement ps;
+        ResultSet rs;
+        String sql = "SELECT "
+                + "idLibro, codigo, nombre, precio, cantidad "
+                + "FROM "
+                + "libro "
+                + "WHERE "
+                + "idLibro = ?";
+
+        try {
+            int fila = tblLibros.getSelectedRow();
+            int id = Integer.parseInt(tblLibros.getValueAt(fila, 0).toString());
+
+            Connection conect = getConnection();
+            ps = conect.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                txtId.setText(String.valueOf(id));
+                txtCodigoLibro.setText(rs.getString("codigo"));
+                txtNombreLibro.setText(rs.getString("nombre"));
+                txtPrecioLibro.setText(rs.getString("precio"));
+                txtCantidadLibro.setText(rs.getString("cantidad"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }//GEN-LAST:event_tblLibrosMouseClicked
+
+    private void cargarTabla() {
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblLibros.getModel();
+        modeloTabla.setRowCount(0);
+        PreparedStatement ps;
+        ResultSet rs;
+        ResultSetMetaData rsmd;
+        int columnas;
+
+        //Ajuste tamaño tabla
+        int[] anchos = {5, 10, 100, 10, 10};
+        for (int i = 0; i < tblLibros.getColumnCount(); i++) {
+            tblLibros.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+
+        String sql = "SELECT "
+                + "idLibro, codigo, nombre, precio, cantidad "
+                + "FROM "
+                + "libro "
+                + "WHERE "
+                + "cantidad > 0";
+        try {
+            Connection conect = getConnection();
+            ps = conect.prepareStatement(sql);
+            rs = ps.executeQuery();
+            rsmd = rs.getMetaData();
+            columnas = rsmd.getColumnCount();
+            while (rs.next()) {
+                Object[] fila = new Object[columnas];
+                for (int i = 0; i < columnas; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                modeloTabla.addRow(fila);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+
+    private void buscarLibro(String criterioBusqueda) {
+        
+        if (criterioBusqueda.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, introduzca el nombre o el código del libro.");
+            return;
+        }
+        
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblLibros.getModel();
+        modeloTabla.setRowCount(0);
+        PreparedStatement ps;
+        ResultSet rs;
+        ResultSetMetaData rsmd;
+        int columnas;
+
+        int[] anchos = {5, 10, 100, 10, 10};
+        for (int i = 0; i < tblLibros.getColumnCount(); i++) {
+            tblLibros.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+
+        String sql = "SELECT idLibro, codigo, nombre, precio, cantidad FROM libro WHERE cantidad > 0";
+        if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
+            sql += " AND (codigo LIKE ? OR nombre LIKE ?)";
+        }
+
+        try {
+            Connection conect = getConnection();
+            ps = conect.prepareStatement(sql);
+
+            if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
+                String criterio = "%" + criterioBusqueda + "%";
+                ps.setString(1, criterio);
+                ps.setString(2, criterio);
+            }
+
+            rs = ps.executeQuery();
+            rsmd = rs.getMetaData();
+            columnas = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                Object[] fila = new Object[columnas];
+                for (int i = 0; i < columnas; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                modeloTabla.addRow(fila);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+
+    private void limiteInput(JTextField textField, int maxCharacters) {
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int remainingCharacters = maxCharacters - currentLength + length;
+
+                if (remainingCharacters > 0) {
+                    if (length <= remainingCharacters) {
+                        super.replace(fb, offset, length, text, attrs);
+                    } else {
+                        String newStr = text.substring(0, remainingCharacters);
+                        super.replace(fb, offset, length, newStr, attrs);
+                    }
+                }
+            }
+        });
+    }
+
+    private void limpiar() {
+        txtId.setText("");
+        txtCodigoLibro.setText("");
+        txtNombreLibro.setText("");
+        txtCantidadLibro.setText("");
+        txtPrecioLibro.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -279,9 +594,8 @@ public class Libro extends javax.swing.JFrame {
             }
         });
     }
-
+// <editor-fold defaultstate="collapsed" desc="Variables declaration - do not modify">
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TableListBook;
     private javax.swing.JButton btnBuscarLibro;
     private javax.swing.JButton btnClearTableLibro;
     private javax.swing.JButton btnEditarLibro;
@@ -295,10 +609,13 @@ public class Libro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tblLibros;
     private javax.swing.JTextField txtBuscarLibro;
     private javax.swing.JTextField txtCantidadLibro;
     private javax.swing.JTextField txtCodigoLibro;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombreLibro;
     private javax.swing.JTextField txtPrecioLibro;
     // End of variables declaration//GEN-END:variables
+// </editor-fold>
 }

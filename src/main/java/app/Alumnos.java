@@ -363,11 +363,6 @@ public class Alumnos extends javax.swing.JFrame {
                 + "activo = 0 "
                 + "WHERE "
                 + "id=?;";
-//        String sql = 
-//                "DELETE FROM "
-//                + "alumnos "
-//                + "WHERE "
-//                + "id=?;";
             PreparedStatement ps;
         try{            
             Connection conect = getConnections();
