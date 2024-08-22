@@ -260,43 +260,44 @@ public class Cliente extends javax.swing.JFrame {
         String apellido = txtApellidoCliente.getText();
         String cedula = txtCedulaCliente.getText();
 
-        if (!nombre.isEmpty() && !apellido.isEmpty() && !cedula.isEmpty()) {
-
-            PreparedStatement ps;
-            Connection conect = getConnection();
-            try {
-                String checkSql = "SELECT COUNT(*) FROM cliente WHERE cedula = ?";
-                PreparedStatement checkPs = conect.prepareStatement(checkSql);
-                checkPs.setString(1, cedula);
-                ResultSet rs = checkPs.executeQuery();
-                rs.next();
-
-                if (rs.getInt(1) > 0) {
-                    JOptionPane.showMessageDialog(null, "La cédula ya existe.");
-                    return;
-                }
-
-                String sql
-                        = "INSERT INTO "
-                        + "cliente "
-                        + "(nombre, apellido, cedula) "
-                        + "VALUES "
-                        + "(?,?,?)";
-                ps = conect.prepareStatement(sql);
-                ps.setString(1, nombre);
-                ps.setString(2, apellido);
-                ps.setString(3, cedula);
-                ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Registro Guardado");
-                limpiar();
-                cargarTabla();
-
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.toString());
-            }
-        } else {
+        if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
         }
+
+        PreparedStatement ps;
+        Connection conect = getConnection();
+        try {
+            String checkSql = "SELECT COUNT(*) FROM cliente WHERE cedula = ?";
+            PreparedStatement checkPs = conect.prepareStatement(checkSql);
+            checkPs.setString(1, cedula);
+            ResultSet rs = checkPs.executeQuery();
+            rs.next();
+
+            if (rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(null, "La cédula ya existe.");
+                return;
+            }
+
+            String sql
+                    = "INSERT INTO "
+                    + "cliente "
+                    + "(nombre, apellido, cedula) "
+                    + "VALUES "
+                    + "(?,?,?)";
+            
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            ps.setString(3, cedula);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Registro Guardado");
+            limpiar();
+            cargarTabla();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
 
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
@@ -309,18 +310,12 @@ public class Cliente extends javax.swing.JFrame {
         int id = Integer.parseInt(txtId.getText());
 
         String sql
-                = "DELETE "
-                + "FROM "
+                = "UPDATE "
                 + "cliente "
+                + "SET "
+                + "deleted = 1 "
                 + "WHERE "
                 + "idCliente=?";
-//        String sql
-//                = "UPDATE "
-//                + "cliente "
-//                + "SET "
-//                + "deleted = 0 "
-//                + "WHERE "
-//                + "idCliente=?";
         PreparedStatement ps;
         try {
             Connection conect = getConnection();
@@ -352,7 +347,7 @@ public class Cliente extends javax.swing.JFrame {
         String nombre = txtNombreCliente.getText();
         String apellido = txtApellidoCliente.getText();
         String cedula = txtCedulaCliente.getText();
-        
+
         if (!nombre.isEmpty() && !apellido.isEmpty() && !cedula.isEmpty()) {
 
             try {
@@ -385,7 +380,7 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     private void TableListClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableListClientMouseClicked
-        
+
         PreparedStatement ps;
         ResultSet rs;
         String sql = "SELECT "
@@ -441,6 +436,8 @@ public class Cliente extends javax.swing.JFrame {
                 + "idCliente, nombre, apellido, cedula, librosComprados "
                 + "FROM "
                 + "cliente "
+                + "WHERE "
+                + "deleted = 0 "
                 + "ORDER BY cedula ASC ";
         try {
             Connection conect = getConnection();
@@ -482,10 +479,12 @@ public class Cliente extends javax.swing.JFrame {
         String sql = "SELECT "
                 + "idCliente, nombre, apellido, cedula, librosComprados "
                 + "FROM "
-                + "cliente";
+                + "cliente "
+                + "WHERE "
+                + "deleted = 0 ";
 
         if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
-            sql += " WHERE (cedula LIKE ? OR nombre LIKE ?)";
+            sql += " AND (cedula LIKE ? OR nombre LIKE ?)";
         }
 
         try {
@@ -502,12 +501,16 @@ public class Cliente extends javax.swing.JFrame {
             rsmd = rs.getMetaData();
             columnas = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                Object[] fila = new Object[columnas];
-                for (int i = 0; i < columnas; i++) {
-                    fila[i] = rs.getObject(i + 1);
+            if (!rs.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
+            } else {
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modeloTabla.addRow(fila);
                 }
-                modeloTabla.addRow(fila);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.toString());

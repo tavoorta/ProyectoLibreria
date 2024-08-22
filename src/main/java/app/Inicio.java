@@ -28,21 +28,29 @@ public class Inicio extends javax.swing.JFrame {
 
         btnLibro = new javax.swing.JButton();
         btnCliente = new javax.swing.JButton();
+        btnVentas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Libreria Tres Gatos");
 
-        btnLibro.setText("LIBRO");
+        btnLibro.setText("LIBROS");
         btnLibro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLibroActionPerformed(evt);
             }
         });
 
-        btnCliente.setText("CLIENTE");
+        btnCliente.setText("CLIENTES");
         btnCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClienteActionPerformed(evt);
+            }
+        });
+
+        btnVentas.setText("VENTAS");
+        btnVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVentasActionPerformed(evt);
             }
         });
 
@@ -51,11 +59,13 @@ public class Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCliente)
-                    .addComponent(btnLibro))
-                .addContainerGap(439, Short.MAX_VALUE))
+                .addGap(147, 147, 147)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnVentas)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnCliente)
+                        .addComponent(btnLibro)))
+                .addContainerGap(434, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,7 +74,9 @@ public class Inicio extends javax.swing.JFrame {
                 .addComponent(btnLibro)
                 .addGap(32, 32, 32)
                 .addComponent(btnCliente)
-                .addContainerGap(260, Short.MAX_VALUE))
+                .addGap(69, 69, 69)
+                .addComponent(btnVentas)
+                .addContainerGap(168, Short.MAX_VALUE))
         );
 
         pack();
@@ -81,6 +93,12 @@ public class Inicio extends javax.swing.JFrame {
         cliente.setVisible(true);       
         this.dispose();
     }//GEN-LAST:event_btnClienteActionPerformed
+
+    private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
+        Venta venta = new Venta();
+        venta.setVisible(true);       
+        this.dispose();
+    }//GEN-LAST:event_btnVentasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,5 +138,6 @@ public class Inicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnLibro;
+    private javax.swing.JButton btnVentas;
     // End of variables declaration//GEN-END:variables
 }

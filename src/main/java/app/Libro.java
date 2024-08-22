@@ -262,52 +262,52 @@ public class Libro extends javax.swing.JFrame {
         String nombre = txtNombreLibro.getText();
         String cantidad = txtCantidadLibro.getText();
         String precio = txtPrecioLibro.getText().replace(",", ".");
-        if (!codigoLibro.isEmpty() && !nombre.isEmpty() && !cantidad.isEmpty() && !precio.isEmpty()) {
-
-            int cantidadLibro = Integer.parseInt(cantidad);
-            double precioLibro;
-            try {
-                precioLibro = Double.parseDouble(precio);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese un precio válido.");
-                return;
-            }
-            PreparedStatement ps;
-            Connection conect = getConnection();
-            try {
-                String checkSql = "SELECT COUNT(*) FROM libro WHERE codigo = ?";
-                PreparedStatement checkPs = conect.prepareStatement(checkSql);
-                checkPs.setString(1, codigoLibro);
-                ResultSet rs = checkPs.executeQuery();
-                rs.next();
-
-                if (rs.getInt(1) > 0) {
-                    JOptionPane.showMessageDialog(null, "El código de libro ya existe. Por favor, ingrese un código diferente.");
-                    return;
-                }
-
-                String sql
-                        = "INSERT INTO "
-                        + "libro "
-                        + "(codigo, precio, cantidad, nombre) "
-                        + "VALUES "
-                        + "(?,?,?,?)";
-                ps = conect.prepareStatement(sql);
-                ps.setString(1, codigoLibro);
-                ps.setDouble(2, precioLibro);
-                ps.setInt(3, cantidadLibro);
-                ps.setString(4, nombre);
-                ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Registro Guardado");
-                limpiar();
-                cargarTabla();
-
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.toString());
-            }
-        } else {
+        if (codigoLibro.isEmpty() || nombre.isEmpty() || cantidad.isEmpty() || precio.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
         }
+
+        int cantidadLibro = Integer.parseInt(cantidad);
+        double precioLibro;
+        try {
+            precioLibro = Double.parseDouble(precio);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un precio válido.");
+            return;
+        }
+        PreparedStatement ps;
+        Connection conect = getConnection();
+        try {
+            String checkSql = "SELECT COUNT(*) FROM libro WHERE codigo = ?";
+            PreparedStatement checkPs = conect.prepareStatement(checkSql);
+            checkPs.setString(1, codigoLibro);
+            ResultSet rs = checkPs.executeQuery();
+            rs.next();
+
+            if (rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(null, "El código de libro ya existe. Por favor, ingrese un código diferente.");
+                return;
+            }
+
+            String sql
+                    = "INSERT INTO "
+                    + "libro "
+                    + "(codigo, precio, cantidad, nombre) "
+                    + "VALUES "
+                    + "(?,?,?,?)";
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, codigoLibro);
+            ps.setDouble(2, precioLibro);
+            ps.setInt(3, cantidadLibro);
+            ps.setString(4, nombre);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Registro Guardado");
+            limpiar();
+            cargarTabla();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+
     }//GEN-LAST:event_btnGuardarLibroActionPerformed
 
     private void btnBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarLibroActionPerformed
@@ -328,7 +328,7 @@ public class Libro extends javax.swing.JFrame {
                 = "UPDATE "
                 + "libro "
                 + "SET "
-                + "cantidad = 0 "
+                + "deleted = 1 "
                 + "WHERE "
                 + "idLibro=?";
         PreparedStatement ps;
@@ -465,7 +465,7 @@ public class Libro extends javax.swing.JFrame {
                 + "FROM "
                 + "libro "
                 + "WHERE "
-                + "cantidad > 0";
+                + "deleted = 0";
         try {
             Connection conect = getConnection();
             ps = conect.prepareStatement(sql);
@@ -485,12 +485,12 @@ public class Libro extends javax.swing.JFrame {
     }
 
     private void buscarLibro(String criterioBusqueda) {
-        
+
         if (criterioBusqueda.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, introduzca el nombre o el código del libro.");
             return;
         }
-        
+
         DefaultTableModel modeloTabla = (DefaultTableModel) tblLibros.getModel();
         modeloTabla.setRowCount(0);
         PreparedStatement ps;
@@ -503,7 +503,7 @@ public class Libro extends javax.swing.JFrame {
             tblLibros.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
         }
 
-        String sql = "SELECT idLibro, codigo, nombre, precio, cantidad FROM libro WHERE cantidad > 0";
+        String sql = "SELECT idLibro, codigo, nombre, precio, cantidad FROM libro WHERE deleted = 0";
         if (criterioBusqueda != null && !criterioBusqueda.isEmpty()) {
             sql += " AND (codigo LIKE ? OR nombre LIKE ?)";
         }
@@ -522,12 +522,16 @@ public class Libro extends javax.swing.JFrame {
             rsmd = rs.getMetaData();
             columnas = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                Object[] fila = new Object[columnas];
-                for (int i = 0; i < columnas; i++) {
-                    fila[i] = rs.getObject(i + 1);
+            if (!rs.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(null, "Libro no encontrado.");
+            } else {
+                while (rs.next()) {
+                    Object[] fila = new Object[columnas];
+                    for (int i = 0; i < columnas; i++) {
+                        fila[i] = rs.getObject(i + 1);
+                    }
+                    modeloTabla.addRow(fila);
                 }
-                modeloTabla.addRow(fila);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
