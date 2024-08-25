@@ -284,7 +284,7 @@ public class Cliente extends javax.swing.JFrame {
                     + "(nombre, apellido, cedula) "
                     + "VALUES "
                     + "(?,?,?)";
-            
+
             ps = conect.prepareStatement(sql);
             ps.setString(1, nombre);
             ps.setString(2, apellido);
@@ -334,6 +334,7 @@ public class Cliente extends javax.swing.JFrame {
     private void btnClearTableCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableCLienteActionPerformed
         DefaultTableModel model = (DefaultTableModel) TableListClient.getModel();
         model.setRowCount(0);
+        limpiar();
     }//GEN-LAST:event_btnClearTableCLienteActionPerformed
 
     private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
