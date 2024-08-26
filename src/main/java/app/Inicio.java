@@ -4,9 +4,15 @@
  */
 package app;
 
+import Implementation.Clientes;
 import Implementation.Libros;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
@@ -15,10 +21,14 @@ import javax.swing.ImageIcon;
 public class Inicio extends javax.swing.JFrame {
 
     Libros libro = new Libros();
+    Clientes cliente = new Clientes();
 
     public Inicio() {
         initComponents();
         showLogo();
+        txtIdLibro.setVisible(false);
+        txtIdCliente.setVisible(false);
+//        txtId.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -37,7 +47,7 @@ public class Inicio extends javax.swing.JFrame {
         btnClearTableLibro = new javax.swing.JButton();
         btnEditarLibro = new javax.swing.JButton();
         btnTodosLibros = new javax.swing.JButton();
-        txtId = new javax.swing.JTextField();
+        txtIdLibro = new javax.swing.JTextField();
         btnGuardarLibro = new javax.swing.JButton();
         btnBuscarLibro = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -52,7 +62,26 @@ public class Inicio extends javax.swing.JFrame {
         txtBuscarLibro = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblLibros = new javax.swing.JTable();
+        btnInicio1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        btnBuscarCliente = new javax.swing.JButton();
+        txtBuscarCliente = new javax.swing.JTextField();
+        txtIdCliente = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        btnInicio = new javax.swing.JButton();
+        txtNombreCliente = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtApellidoCliente = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtCedulaCliente = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnTodosClientes = new javax.swing.JButton();
+        btnGuardarCliente = new javax.swing.JButton();
+        btnEliminarCliente = new javax.swing.JButton();
+        btnClearTableCLiente = new javax.swing.JButton();
+        btnEditarCliente = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TableListClient = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         lblImagen = new javax.swing.JLabel();
 
@@ -203,6 +232,13 @@ public class Inicio extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tblLibros);
 
+        btnInicio1.setText("INICIO");
+        btnInicio1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicio1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -243,29 +279,31 @@ public class Inicio extends javax.swing.JFrame {
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtCantidadLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(btnBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnInicio1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtIdLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(45, 45, 45)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarLibro)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIdLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInicio1))
+                .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10)
@@ -284,22 +322,184 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(btnEditarLibro)
                     .addComponent(btnEliminarLibro)
                     .addComponent(btnTodosLibros))
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(100, 100, 100))
         );
 
         jTabbedPane1.addTab("tab1", jPanel2);
+
+        btnBuscarCliente.setText("Buscar por Cédula");
+        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarClienteActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("CLIENTES");
+
+        btnInicio.setText("INICIO");
+        btnInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Apellido del Cliente");
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Cédula del Cliente");
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Nombre del Cliente");
+
+        btnTodosClientes.setText("Mostrar Clientes");
+        btnTodosClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTodosClientesActionPerformed(evt);
+            }
+        });
+
+        btnGuardarCliente.setText("Agregar Cliente");
+        btnGuardarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarClienteActionPerformed(evt);
+            }
+        });
+
+        btnEliminarCliente.setText("Eliminar");
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
+
+        btnClearTableCLiente.setText("Limpiar Busqueda");
+        btnClearTableCLiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearTableCLienteActionPerformed(evt);
+            }
+        });
+
+        btnEditarCliente.setText("Editar");
+        btnEditarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarClienteActionPerformed(evt);
+            }
+        });
+
+        TableListClient.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "idCliente", "Nombre", "Apellido", "Cedula", "Libros Comprados"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        TableListClient.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableListClientMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TableListClient);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(btnInicio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(128, 128, 128)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(131, 131, 131)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCedulaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnGuardarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnTodosClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(59, 59, 59)
+                                .addComponent(btnClearTableCLiente))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBuscarCliente)
+                        .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnInicio)
+                    .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCedulaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEditarCliente)
+                        .addComponent(btnGuardarCliente))
+                    .addComponent(btnEliminarCliente)
+                    .addComponent(btnTodosClientes)
+                    .addComponent(btnClearTableCLiente))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("tab2", jPanel3);
@@ -325,10 +525,18 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibrosActionPerformed
         jTabbedPane1.setSelectedIndex(1);
+        limiteInput(txtCodigoLibro, 10);
+        limiteInput(txtNombreLibro, 50);
+        limiteInput(txtPrecioLibro, 10);
+        limiteInput(txtCantidadLibro, 4);
     }//GEN-LAST:event_btnLibrosActionPerformed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         jTabbedPane1.setSelectedIndex(2);
+        limiteInput(txtNombreCliente, 50);
+        limiteInput(txtApellidoCliente, 50);
+        limiteInput(txtCedulaCliente, 20);
+        limiteInput(txtBuscarCliente, 20);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
@@ -336,16 +544,16 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void btnEliminarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarLibroActionPerformed
-        libro.eliminarLibro(txtId, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
+        libro.eliminarLibro(txtIdLibro, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
     private void btnClearTableLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableLibroActionPerformed
-        libro.limpiarLibros(txtId, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro);
+        libro.limpiarLibros(txtIdLibro, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro);
         libro.limpiarTabla(tblLibros);
     }//GEN-LAST:event_btnClearTableLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
-        libro.editarLibro(txtId, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
+        libro.editarLibro(txtIdLibro, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
     }//GEN-LAST:event_btnEditarLibroActionPerformed
 
     private void btnTodosLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodosLibrosActionPerformed
@@ -353,7 +561,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTodosLibrosActionPerformed
 
     private void btnGuardarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarLibroActionPerformed
-        libro.guardarLibro(txtId, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
+        libro.guardarLibro(txtIdLibro, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, txtBuscarLibro, tblLibros);
     }//GEN-LAST:event_btnGuardarLibroActionPerformed
 
     private void btnBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarLibroActionPerformed
@@ -361,17 +569,73 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarLibroActionPerformed
 
     private void tblLibrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLibrosMouseClicked
-        libro.librosMouseClicked(txtId, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, tblLibros);
+        libro.librosMouseClicked(txtIdLibro, txtCodigoLibro, txtNombreLibro, txtCantidadLibro, txtPrecioLibro, tblLibros);
     }//GEN-LAST:event_tblLibrosMouseClicked
 
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+        cliente.buscarCliente(txtBuscarCliente, TableListClient);
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+    }//GEN-LAST:event_btnInicioActionPerformed
+
+    private void btnTodosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodosClientesActionPerformed
+        cliente.cargarTablaCliente(TableListClient);
+    }//GEN-LAST:event_btnTodosClientesActionPerformed
+
+    private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
+        cliente.guardarCliente(txtIdCliente, txtNombreCliente, txtApellidoCliente, txtCedulaCliente, txtBuscarCliente, TableListClient);
+    }//GEN-LAST:event_btnGuardarClienteActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        cliente.eliminarCliente(txtIdCliente, txtNombreCliente, txtApellidoCliente, txtCedulaCliente, txtBuscarCliente, TableListClient);
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    private void btnClearTableCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableCLienteActionPerformed
+        cliente.limpiarCliente(txtIdCliente, txtNombreCliente, txtApellidoCliente, txtCedulaCliente, txtBuscarCliente);
+        cliente.limpiarTabla(TableListClient);
+    }//GEN-LAST:event_btnClearTableCLienteActionPerformed
+
+    private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
+        cliente.editarCliente(txtIdCliente, txtNombreCliente, txtApellidoCliente, txtCedulaCliente, txtBuscarCliente, TableListClient);
+    }//GEN-LAST:event_btnEditarClienteActionPerformed
+
+    private void TableListClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableListClientMouseClicked
+        cliente.clienteMouseClicked(txtIdCliente, txtNombreCliente, txtApellidoCliente, txtCedulaCliente, TableListClient);
+    }//GEN-LAST:event_TableListClientMouseClicked
+
+    private void btnInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicio1ActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+    }//GEN-LAST:event_btnInicio1ActionPerformed
+
+    private void limiteInput(JTextField textField, int maxCharacters) {
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int remainingCharacters = maxCharacters - currentLength + length;
+
+                if (remainingCharacters > 0) {
+                    if (length <= remainingCharacters) {
+                        super.replace(fb, offset, length, text, attrs);
+                    } else {
+                        String newStr = text.substring(0, remainingCharacters);
+                        super.replace(fb, offset, length, newStr, attrs);
+                    }
+                }
+            }
+        });
+    }
+    
     private void showLogo() {
         Icon icon = new ImageIcon(new ImageIcon(getClass().getResource("/icons/logo.jpeg")).getImage()
-            .getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), 0));
+                .getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), 0));
         lblImagen.setIcon(icon);
 
         Icon iconInicio = new ImageIcon(new ImageIcon(getClass().getResource("/icons/inicio.jpeg")).getImage()
-            .getScaledInstance(lblImagenInicio.getWidth(), lblImagenInicio.getHeight(), 0));
-        lblImagenInicio.setIcon(iconInicio); 
+                .getScaledInstance(lblImagenInicio.getWidth(), lblImagenInicio.getHeight(), 0));
+        lblImagenInicio.setIcon(iconInicio);
     }
 
     /**
@@ -410,18 +674,31 @@ public class Inicio extends javax.swing.JFrame {
     }
 // <editor-fold defaultstate="collapsed" desc="Variables declaration - do not modify">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableListClient;
+    private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnBuscarLibro;
+    private javax.swing.JButton btnClearTableCLiente;
     private javax.swing.JButton btnClearTableLibro;
     private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnEditarCliente;
     private javax.swing.JButton btnEditarLibro;
+    private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarLibro;
+    private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnGuardarLibro;
+    private javax.swing.JButton btnInicio;
+    private javax.swing.JButton btnInicio1;
     private javax.swing.JButton btnLibros;
+    private javax.swing.JButton btnTodosClientes;
     private javax.swing.JButton btnTodosLibros;
     private javax.swing.JButton btnVentas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -429,15 +706,21 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblImagenInicio;
     private javax.swing.JTable tblLibros;
+    private javax.swing.JTextField txtApellidoCliente;
+    private javax.swing.JTextField txtBuscarCliente;
     private javax.swing.JTextField txtBuscarLibro;
     private javax.swing.JTextField txtCantidadLibro;
+    private javax.swing.JTextField txtCedulaCliente;
     private javax.swing.JTextField txtCodigoLibro;
-    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIdCliente;
+    private javax.swing.JTextField txtIdLibro;
+    private javax.swing.JTextField txtNombreCliente;
     private javax.swing.JTextField txtNombreLibro;
     private javax.swing.JTextField txtPrecioLibro;
     // End of variables declaration//GEN-END:variables

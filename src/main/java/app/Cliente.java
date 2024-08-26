@@ -262,6 +262,7 @@ public class Cliente extends javax.swing.JFrame {
 
         if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+            return;
         }
 
         PreparedStatement ps;
