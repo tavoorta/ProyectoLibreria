@@ -13,26 +13,7 @@ import java.sql.SQLException;
  * @author ggaro
  */
 public class Conexion {
-    public static Connection getConnections(){
-        Connection connection = null;
-        // definir datos para crear conexion
-        var database = "escuela";
-        var url = "jdbc:mysql://localhost:3306/" + database;
-        var username = "root";
-        var password = "753159";
-
-        // Cargar clase del driver mysql en memoria
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-        }
-        //catch(Exception e){
-        catch(ClassNotFoundException | SQLException e){
-            System.out.println("Error en conexion a BD: " + e.getMessage());
-        }
-
-        return connection;
-    }
+    
     public static Connection getConnection(){
         Connection connection = null;
         // definir datos para crear conexion
