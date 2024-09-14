@@ -107,7 +107,8 @@ public class Clientes {
         }
     }
 
-    public void editarCliente(JTextField txtId, JTextField txtNombreCliente, JTextField txtApellidoCliente, JTextField txtCedulaCliente, JTextField txtBuscarCliente, JTable TableListClient) {
+    public void editarCliente(JTextField txtId, JTextField txtNombreCliente, JTextField txtApellidoCliente, 
+            JTextField txtCedulaCliente, JTextField txtBuscarCliente, JTable TableListClient) {
 
         String cliente = txtId.getText();
         if (cliente.isEmpty()) {
@@ -211,7 +212,8 @@ public class Clientes {
         }
     }
         
-    public void eliminarCliente(JTextField txtId, JTextField txtNombreCliente, JTextField txtApellidoCliente, JTextField txtCedulaCliente, JTextField txtBuscarCliente, JTable TableListClient) {
+    public void eliminarCliente(JTextField txtId, JTextField txtNombreCliente, JTextField txtApellidoCliente, 
+            JTextField txtCedulaCliente, JTextField txtBuscarCliente, JTable TableListClient) {
 
         String cliente = txtId.getText();
         if (cliente.isEmpty()) {

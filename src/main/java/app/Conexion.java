@@ -17,10 +17,10 @@ public class Conexion {
     public static Connection getConnection(){
         Connection connection = null;
         // definir datos para crear conexion
-        var database = "libreria";
-        var url = "jdbc:mysql://localhost:3306/" + database;
-        var username = "root";
-        var password = "753159";
+        var database = "";
+        var url = "" + database;
+        var username = "";
+        var password = "";
 
         // Cargar clase del driver mysql en memoria
         try{
